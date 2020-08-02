@@ -10,42 +10,61 @@ class GildedRose(object):
             self.updateItem(item)
 
     def updateItem(self, item):
-        if self.isAgedBrie(item):
-            if self.qualityNotMaxed(item):
-                self.inscreaseQualityByOne(item)
-            self.decreaseSellinByOne(item)
-            if self.afterSellin(item) and self.qualityNotMaxed(item):
-                self.inscreaseQualityByOne(item)
-
-        elif self.isBackstagePass(item):
-            if self.qualityNotMaxed(item):
-                self.inscreaseQualityByOne(item)
-                if item.sell_in < 11 and self.qualityNotMaxed(item):
-                    self.inscreaseQualityByOne(item)
-                if item.sell_in < 6 and self.qualityNotMaxed(item):
-                    self.inscreaseQualityByOne(item)
-            self.decreaseSellinByOne(item)
-            if self.afterSellin(item):
-                item.quality = 0
-
+        if self.isImprovingOverTime(item):
+            self.updateImprovingItem(item)
+        elif self.isImprovingUntilEvent(item):
+            self.updateImprovingUntilEvent(item)
         elif self.isLegendary(item):
-            pass
-        
+            self.updateLegendaryItem(item)
+        elif self.isConjured(item):
+            self.updateConjuredItem(item)
         else:
+            self.updateNormalItem(item)
+
+    def updateNormalItem(self, item):
+        if self.stillHasQuality(item):
+            self.decreaseQualityByOne(item)
+        self.decreaseSellinByOne(item)
+        if self.afterSellin(item) and self.stillHasQuality(item):
+            self.decreaseQualityByOne(item)
+
+    def updateLegendaryItem(self, _item):
+        pass
+
+    def updateImprovingUntilEvent(self, item):
+        if self.qualityNotMaxed(item):
+            self.inscreaseQualityByOne(item)
+            if item.sell_in < 11 and self.qualityNotMaxed(item):
+                self.inscreaseQualityByOne(item)
+            if item.sell_in < 6 and self.qualityNotMaxed(item):
+                self.inscreaseQualityByOne(item)
+        self.decreaseSellinByOne(item)
+        if self.afterSellin(item):
+            item.quality = 0
+
+    def updateImprovingItem(self, item):
+        if self.qualityNotMaxed(item):
+            self.inscreaseQualityByOne(item)
+        self.decreaseSellinByOne(item)
+        if self.afterSellin(item) and self.qualityNotMaxed(item):
+            self.inscreaseQualityByOne(item)
+
+    def updateConjuredItem(self, item):
+        if self.stillHasQuality(item):
+            self.decreaseQualityByOne(item)
+        if self.stillHasQuality(item):
+            self.decreaseQualityByOne(item)
+        self.decreaseSellinByOne(item)
+        if self.afterSellin(item) and self.stillHasQuality(item):
+            self.decreaseQualityByOne(item)
             if self.stillHasQuality(item):
                 self.decreaseQualityByOne(item)
-            self.decreaseSellinByOne(item)
-            if self.afterSellin(item) and self.stillHasQuality(item):
-                self.decreaseQualityByOne(item)
-
-
-
-
+                
 
     def decreaseSellinByOne(self, item):
         item.sell_in = item.sell_in - 1
 
-    def isBackstagePass(self, item):
+    def isImprovingUntilEvent(self, item):
         return item.name == "Backstage passes to a TAFKAL80ETC concert"
 
     def inscreaseQualityByOne(self, item):
@@ -63,10 +82,13 @@ class GildedRose(object):
     def isLegendary(self, item):
         return item.name == "Sulfuras, Hand of Ragnaros"
 
+    def isConjured(self, item):
+        return item.name.startswith("Conjured")
+
     def stillHasQuality(self, item):
         return item.quality > 0
 
-    def isAgedBrie(self, item):
+    def isImprovingOverTime(self, item):
         return item.name == "Aged Brie"
 
 
