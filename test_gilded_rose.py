@@ -80,14 +80,20 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(items[0].quality, 0)
 
     def test_conjured_items_degrade_quality_twice_as_fast(self) :
-        items = [Item("Conjured Spoon", 2, 20)]
+        items = [Item("Conjured Spoon", 2, 23)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
-        self.assertEqual(items[0].quality, 18) 
+        self.assertEqual(items[0].quality, 21) 
         gilded_rose.update_quality()
-        self.assertEqual(items[0].quality, 16)
+        self.assertEqual(items[0].quality, 19)
         gilded_rose.update_quality()
-        self.assertEqual(items[0].quality, 12) 
+        self.assertEqual(items[0].quality, 15) 
+        gilded_rose.update_quality()
+        gilded_rose.update_quality()
+        gilded_rose.update_quality()
+        self.assertEqual(items[0].quality, 3) 
+        gilded_rose.update_quality()
+        self.assertEqual(items[0].quality, 0) 
 
 
 if __name__ == '__main__':
