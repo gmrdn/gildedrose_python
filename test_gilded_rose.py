@@ -63,16 +63,16 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(items[0].quality, 2)
         gilded_rose.update_quality() # sellin 9
         self.assertEqual(items[0].quality, 4)
-        gilded_rose.update_quality() # sellin 8, 7, 6
-        gilded_rose.update_quality()
-        gilded_rose.update_quality()
+        gilded_rose.update_quality() # sellin 8
+        gilded_rose.update_quality() # 7
+        gilded_rose.update_quality() # 6
         self.assertEqual(items[0].quality, 10)
         gilded_rose.update_quality() # sellin 5
         self.assertEqual(items[0].quality, 12)
-        gilded_rose.update_quality() # sellin 4 3 2 1
-        gilded_rose.update_quality()
-        gilded_rose.update_quality()
-        gilded_rose.update_quality()
+        gilded_rose.update_quality() # sellin 4
+        gilded_rose.update_quality() # 3
+        gilded_rose.update_quality() # 2
+        gilded_rose.update_quality() # 1
         self.assertEqual(items[0].quality, 24)
         gilded_rose.update_quality() # sellin 0
         self.assertEqual(items[0].quality, 27)
