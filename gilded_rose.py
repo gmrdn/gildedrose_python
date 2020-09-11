@@ -79,7 +79,7 @@ class ConcreteStrategyImprovingItem(Strategy):
             self.increase_quality_by_one_until_max(item)
 
 
-class Context():
+class Context:
     def __init__(self, strategy: Strategy) -> None:
         self._strategy = strategy
 
